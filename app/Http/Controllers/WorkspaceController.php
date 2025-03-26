@@ -14,7 +14,7 @@ class WorkspaceController extends Controller
      */
     public function index()
     {
-        $workspaces = Workspace::paginate(10);
+        $workspaces = Workspace::paginate(4);
         return response()->json([
             'message' => 'Workspaces listados.',
             'data' => WorkspaceResource::collection($workspaces),

@@ -1,7 +1,9 @@
 <?php
 
+use App\Http\Controllers\ReservationController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\WorkspaceController;
+use App\Http\Resources\ReservationResource;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
@@ -14,4 +16,9 @@ Route::middleware('auth:sanctum')->group(function(){
     Route::get('/user',[UserController::class,'checkAuth'])->name('');
 
     Route::apiResource('workspace', WorkspaceController::class);
+
+    Route::apiResource('reservation',ReservationController::class)->except(['show','update']);
+    Route::put('reservation/{id}',[ReservationController::class,'changeStatus'])->name('reservation.changeStatus');
+    Route::get('reservation/schedule',[ReservationController::class,'getSchedule'])->name('reservation.schedule');
+    Route::get('reservation/pending',[ReservationController::class,'indexPending'])->name('reservation.pending');
 });
