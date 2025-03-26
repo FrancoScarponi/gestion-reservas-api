@@ -21,7 +21,12 @@ class UserController extends Controller
         return response()->json([
             'message' => 'Usuario creado',
             'data' => [
-                'user' => $user,
+                'user' => [
+                    'id' => $user->id,
+                    'name' => $user->name,
+                    'email' => $user->email,
+                    'role' => $user->getRoleNames()->first(),
+                ],
                 'token' => $token
             ],
         ], 201);
@@ -43,7 +48,12 @@ class UserController extends Controller
         return response()->json([
             'message' => 'Sesion iniciada.',
             'data' => [
-                'user' => $user,
+                'user' => [
+                    'id' => $user->id,
+                    'name' => $user->name,
+                    'email' => $user->email,
+                    'role' => $user->getRoleNames()->first(),
+                ],
                 'token' => $token
             ],
         ], 200);

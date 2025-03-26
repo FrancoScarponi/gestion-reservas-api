@@ -157,14 +157,14 @@ class ReservationController extends Controller
         $reservations = Reservation::where('status', 'pending')
             ->with(['user', 'workspace'])
             ->orderBy('created_at', 'desc')
-            ->paginate(10);
+            ->paginate(4);
 
         if ($reservations->isEmpty()) {
             return response()->json([
                 'message' => 'No hay reservas pendientes.',
             ], 404);
         };
-
+        $reservations->load(['workspace','user']);
         return response()->json([
             'message' => 'Listado de reservas pendientes.',
             'data' => ReservationResource::collection($reservations),
