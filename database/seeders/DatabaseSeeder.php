@@ -8,6 +8,7 @@ use App\Models\Workspace;
 // use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\Hash;
+use Spatie\Permission\Models\Role;
 
 class DatabaseSeeder extends Seeder
 {
@@ -16,29 +17,42 @@ class DatabaseSeeder extends Seeder
      */
     public function run(): void
     {
-        // User::factory(10)->create();
 
         User::factory()->create([
             'name' => 'Test User',
             'email' => 'test@example.com',
         ]);
 
-        $user = User::create([
-            'name' => 'Usuario de prueba',
-            'email' => 'ejemplo@gmail.com',
+        //Roles
+        $adminRole = Role::firstOrCreate(['name' => 'admin']);
+        $clientRole = Role::firstOrCreate(['name' => 'client']);
+        
+        //Usuario administrador
+        $adminUser = User::create([
+            'name' => 'Administrador',
+            'email' => 'admin@example.com',
             'password' => Hash::make('password'),
         ]);
+        $adminUser->assignRole($adminRole); 
+
+        //Usuario cliente
+        $clientUser = User::create([
+            'name' => 'Cliente',
+            'email' => 'client@example.com',
+            'password' => Hash::make('password'),
+        ]);
+        $clientUser->assignRole($clientRole);
 
         $workspaces = Workspace::factory(20)->create();
 
         Reservation::factory(100)->create([
-            'user_id' => $user->id,
-            'workspace_id' => $workspaces->random()->id, 
+            'user_id' => $clientUser->id,
+            'workspace_id' => $workspaces->random()->id,
         ]);
 
         Reservation::factory(50)->create([
-            'user_id' => $user->id,
-            'workspace_id' => 1, 
+            'user_id' => $clientUser->id,
+            'workspace_id' => 1,
         ]);
     }
 }

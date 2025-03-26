@@ -49,13 +49,19 @@ class UserController extends Controller
         ], 200);
     }
 
-    public function checkAuth(Request $request){
+    public function checkAuth(Request $request)
+    {
         $user = $request->user();
         return response()->json([
-            'message'=> 'Usuario autenticado.',
-            'data'=> [
-                'user'=> $user
+            'message' => 'Usuario autenticado.',
+            'data' => [
+                'user' => [
+                    'id' => $user->id,
+                    'name' => $user->name,
+                    'email' => $user->email,
+                    'role' => $user->getRoleNames()->first(),
+                ]
             ]
-        ],201);
+        ], 201);
     }
 }

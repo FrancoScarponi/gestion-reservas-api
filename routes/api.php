@@ -18,7 +18,9 @@ Route::middleware('auth:sanctum')->group(function(){
     Route::apiResource('workspace', WorkspaceController::class);
 
     Route::apiResource('reservation',ReservationController::class)->except(['show','update']);
-    Route::put('reservation/{id}',[ReservationController::class,'changeStatus'])->name('reservation.changeStatus');
     Route::get('reservation/schedule',[ReservationController::class,'getSchedule'])->name('reservation.schedule');
     Route::get('reservation/pending',[ReservationController::class,'indexPending'])->name('reservation.pending');
+
+    Route::middleware('role:admin')->put('reservation/{id}',[ReservationController::class,'changeStatus'])->name('reservation.changeStatus');
+
 });

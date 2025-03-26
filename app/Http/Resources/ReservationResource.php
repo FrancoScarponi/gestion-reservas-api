@@ -27,6 +27,7 @@ class ReservationResource extends JsonResource
                 return [
                     "id" => $this->workspace->id,
                     "name" => $this->workspace->name,
+                    "location" => $this->workspace->location
                 ];
             }),
             "status" => $this->status,

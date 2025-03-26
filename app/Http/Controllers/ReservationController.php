@@ -16,7 +16,10 @@ class ReservationController extends Controller
     {
         $user = $request->user();
 
-        $reservations = $user->reservations()->with(['user', 'workspace'])->paginate(10);
+        $reservations = $user->reservations()
+            ->with(['user', 'workspace'])
+            ->orderBy('created_at', 'desc')
+            ->paginate(4);
         return response()->json([
             'message' => "Lista de todas las reservas.",
             'data' => ReservationResource::collection($reservations),
@@ -120,7 +123,7 @@ class ReservationController extends Controller
             ->where('date', $date)
             ->where('status', '!=', 'rejected')
             ->get();
-        
+
         //Genero lista de horarios de 8 a 20 con disponibilidad en true
         $schedule = [];
         for ($hour = 8; $hour <= 19; $hour++) {
